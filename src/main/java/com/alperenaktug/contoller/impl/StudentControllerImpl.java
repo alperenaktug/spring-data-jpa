@@ -1,6 +1,8 @@
 package com.alperenaktug.contoller.impl;
 
 import com.alperenaktug.contoller.IStudentController;
+import com.alperenaktug.dto.DtoStudent;
+import com.alperenaktug.dto.DtoStudentUI;
 import com.alperenaktug.entities.Student;
 import com.alperenaktug.services.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +19,20 @@ public class StudentControllerImpl implements IStudentController {
 
   @PostMapping(path = "/save")
   @Override
-    public Student saveStudent(@RequestBody Student student) {
-      return studentService.saveStudent(student);
+    public DtoStudent saveStudent(@RequestBody DtoStudentUI dtoStudentUI) {
+      return studentService.saveStudent(dtoStudentUI);
   }
 
   @GetMapping(path = "/list")
     @Override
-    public List<Student> getAllStudents() {
+    public List<DtoStudent> getAllStudents() {
         return studentService.getAllStudents();
 
     }
 
   @GetMapping(path = "/list/{id}")
     @Override
-    public Student getStudentById(@PathVariable(name = "id") Integer id) {
+    public DtoStudent getStudentById(@PathVariable(name = "id") Integer id) {
         return studentService.getStudentById(id);
     }
 
