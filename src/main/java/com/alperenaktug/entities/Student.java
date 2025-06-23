@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,5 +30,13 @@ public class Student {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_of_date" , nullable = true)
     private Date birthOfDate ;
+
+
+    @ManyToMany
+    @JoinTable(name = "student_course",
+    joinColumns  = @JoinColumn(name = "student_id" ),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses ;
 
 }

@@ -1,7 +1,9 @@
 package com.alperenaktug.services.impl;
 
+import com.alperenaktug.dto.DtoCourse;
 import com.alperenaktug.dto.DtoStudent;
 import com.alperenaktug.dto.DtoStudentUI;
+import com.alperenaktug.entities.Course;
 import com.alperenaktug.entities.Student;
 import com.alperenaktug.repository.StudentRepository;
 import com.alperenaktug.services.IStudentService;
@@ -48,14 +50,23 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public DtoStudent getStudentById(Integer id) {
-        DtoStudent dto = new DtoStudent();
-       Optional<Student> optional =  studentRepository.findById(id);
-       if (optional.isPresent()) {
-           Student dbStudent = optional.get();
+     DtoStudent dtoStudent = new DtoStudent();
+     Optional<Student> optional = studentRepository.findById(id);
+     if(optional.isEmpty()){
+         return null;
+     }
+     Student dbStudent = optional.get();
+     BeanUtils.copyProperties(dbStudent, dtoStudent);
 
-           BeanUtils.copyProperties(dbStudent, dto);
-           }
-            return dto;
+     if (dbStudent.getCourses() != null && !dbStudent.getCourses().isEmpty()) {
+         for (Course course : dbStudent.getCourses()) {
+             DtoCourse dtoCourse = new DtoCourse();
+             BeanUtils.copyProperties(course, dtoCourse);
+
+             dtoStudent.getCourses().add(dtoCourse);
+         }
+     }
+     return dtoStudent;
     }
 
     @Override
